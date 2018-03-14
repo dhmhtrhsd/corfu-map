@@ -7,10 +7,25 @@
     <link href="styles.css" title="compact" rel="stylesheet" type="text/css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-CmjQQcI71kuW7qyZLCLTzOT1xl9jd20"></script>
     <script src="editor.js"></script>
-  </head>
-  <body>
-    <textarea id="geojson-output" placeholder="See edits in GeoJson."></textarea>
+</head>
+<body>
+  <textarea id="geojson-output"placeholder="See edits in GeoJson."rows="10"></textarea>
 	<div id="map-holder"></div>
-	<a id="download-link" href="data:;base64," download="geojson.json"><button>Download GeoJson</button></a>
+
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Map Options</button>
+  <div id="myDropdown" class="dropdown-content">
+    <a><div class="tooltip"><img src="GeoJSON_Toggle.png"onclick="geoJSONToggle();"><span class="tooltiptext">This button toggles the
+      GeoJSON string textbox that appears in the lower right corner of the screen.</span></div></a>
+    <a id="download-link" href="data:;base64," download="geojson.json"><div class="tooltip"><img src="GeoJSON_Download.png"><span class="tooltiptext">
+      This button downloads a file that contains various geographical information, Markers, LineStrings and Polygons that are placed on the map.</span></div></a>
+    <a><div class="tooltip"><img src="DeleteSpecificShape.png"><span class="tooltiptext">
+      To delete a specific shape or a marker simply select the "Stop Drawing" tool in the upper left corner of the screen, and right-click it.</span></div></a>
+    <a><div class="tooltip"><img src="DeleteAll.png"onclick="deleteAll();"><span class="tooltiptext">Use this button to delete every Marker,
+      LineString or Polygon that is currently placed on the map.</span></div></a>
+    <a><div class="tooltip"><img src="ratingSystem.png"><span class="tooltiptext">This image explains the color property of every path that is drawn on
+      the map based on its quality/usablity. You can change the color of a path by left clicking on it, to cycle through all the available colors.</span></div></a>
+  </div>
+</div>
   </body>
 </html>
