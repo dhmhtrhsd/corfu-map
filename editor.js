@@ -3,7 +3,11 @@ var map;
 var geoJsonOutput;
 var downloadLink;
 var x;
-var linestrings = [];
+var database;
+var ref;
+var data;
+var paths;
+var geoJsonParsed;
 
 function init() {
   // Initialise the map.
@@ -22,15 +26,12 @@ function init() {
     fullscreenControl: false
   });
 
-  map.data.loadGeoJson('data/2016141_review.geojson')
-
   map.data.setControls(['Point', 'LineString', 'Polygon']);
   map.data.setStyle({
     editable: true,
     draggable: true,
     clickable: true
   });
-
 
   bindDataLayerListeners(map.data);
 
@@ -55,7 +56,7 @@ function init() {
       return ({strokeColor: default_color});
 });
 
-//temporarily changes the color of the path that the user has moused over.
+//temporarily changes the opacity of the path that the user has moused over.
 map.data.addListener('mouseover',function(event){
   map.data.overrideStyle(event.feature, {strokeOpacity: 0.5});
 });
@@ -64,17 +65,59 @@ map.data.addListener('mouseout',function(event){
   map.data.overrideStyle(event.feature, {strokeOpacity: 1});
 });
 
+  database = firebase.database();
+  ref = database.ref('firebasePaths');
+  ref.once('value', gotData, errData);
+
 }
 
 google.maps.event.addDomListener(window, 'load', init);
 
+
+
+ function errData(err){
+  console.log('Error!');
+  alert('error!');
+  console.log(err);
+}
+
+function updateData(){
+  data = {
+    geoJsonString: geoJsonOutput.value
+  }
+  ref = database.ref('firebasePaths');
+  ref.push(data);
+  alert('Paths added to database! Refreshing the page will load all the paths from the database.');
+}
+
+function gotData(data){
+  paths = data.val();
+  if(paths == null){
+    console.log("firebase null");
+    alert('Database is empty! Try adding some paths.');
+  }
+  else{
+    var keys = Object.keys(paths);
+    for(var i = 0; i < keys.length; i++){
+    var k = keys[i];
+    var geoJsonString = paths[k].geoJsonString;
+    geoJsonParsed = JSON.parse(geoJsonString);
+    map.data.addGeoJson(geoJsonParsed);
+    }
+  }
+}
+
+
+
 // Refresh different components from other components.
 function refreshGeoJsonFromData() {
   map.data.toGeoJson(function(geoJson) {
-    geoJsonOutput.value = JSON.stringify(geoJson) ;
+    geoJsonOutput.value = JSON.stringify(geoJson);
     refreshDownloadLinkFromGeoJson();
+    //updateData();
   });
 }
+
 
 // Refresh download link.
 function refreshDownloadLinkFromGeoJson() {
@@ -107,6 +150,7 @@ var rating_counter = 1;
           rating_counter = 0;
     });
 }
+
 
 function geoJSONToggle() {
     var toggle = document.getElementById("geojson-output");

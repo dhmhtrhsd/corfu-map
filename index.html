@@ -5,7 +5,22 @@
     <meta charset="utf-8">
     <title>Corfu Map Editor</title>
     <link href="styles.css" title="compact" rel="stylesheet" type="text/css">
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCbI36XFOKpF4nXx3pmWCIPyMomDFDedpw",
+        authDomain: "corfu-map-firebase.firebaseapp.com",
+        databaseURL: "https://corfu-map-firebase.firebaseio.com",
+        projectId: "corfu-map-firebase",
+        storageBucket: "",
+        messagingSenderId: "66989110756"
+      };
+      firebase.initializeApp(config);
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-CmjQQcI71kuW7qyZLCLTzOT1xl9jd20"></script>
+<!-- GeoFire -->
+<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
     <script src="editor.js"></script>
 </head>
 <body>
@@ -23,6 +38,7 @@
       To delete a specific shape or a marker simply select the "Stop Drawing" tool in the upper left corner of the screen, and right-click it.</span></div></a>
     <a><div class="tooltip"><img src="DeleteAll.png"onclick="deleteAll();"><span class="tooltiptext">Use this button to delete every Marker,
       LineString or Polygon that is currently placed on the map.</span></div></a>
+      <a><div class="tooltip"><img src="updatePaths.png"onclick="updateData();"><span class="tooltiptext">Use this button to update the database after you have drawn a new path on the map.</span></div></a>
     <a><div class="tooltip"><img src="ratingSystem.png"><span class="tooltiptext">This image explains the color property of every path that is drawn on
       the map based on its quality/usablity. You can change the color of a path by selecting the "Stop Drawing" tool and left clicking on the path to cycle through all the available colors.</span></div></a>
   </div>
